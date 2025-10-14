@@ -1,12 +1,14 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
-import org.apache.commons.validator.routines.EmailValidator;
+import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.algaworks.algashop.ordering.domain.exception.ErrorMessages.*;
 
 public class Customer implements Serializable {
 
@@ -130,10 +132,10 @@ public class Customer implements Serializable {
     }
 
     private void setFullName(String fullName) {
-        Objects.requireNonNull(fullName);
+        Objects.requireNonNull(fullName, VALIDATION_ERROR_FULLNAME_IS_NULL);
 
         if (fullName.isBlank()) {
-            throw new IllegalArgumentException("Full name cannot be blank");
+            throw new IllegalArgumentException(VALIDATION_ERROR_FULLNAME_IS_BLANK);
         }
 
         this.fullName = fullName;
@@ -145,23 +147,15 @@ public class Customer implements Serializable {
             return;
         }
 
-        if (birthDate().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Birth date cannot be in the future");
+        if (birthDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException(VALIDATION_ERROR_BIRTHDATE_MUST_IN_PAST);
         }
 
         this.birthDate = birthDate;
     }
 
     private void setEmail(String email) {
-        Objects.requireNonNull(email);
-
-        if (email.isBlank()) {
-            throw new IllegalArgumentException("Email cannot be blank");
-        }
-
-        if (!EmailValidator.getInstance().isValid(email)) {
-            throw new IllegalArgumentException("Email is not valid");
-        }
+        FieldValidations.requiresValidEmail(email, VALIDATION_ERROR_INVALID_EMAIL);
 
         this.email = email;
     }
