@@ -11,4 +11,6 @@ public class ErrorMessages {
 
     public static final String ERROR_CUSTOMER_ALREADY_ARCHIVED = "Customer is already archived and cannot be modified";
 
+    public static final String ERROR_LOYALTY_POINTS_ZERO_OR_NEGATIVE = "Loyalty points cannot be zero or negative";
+
 }

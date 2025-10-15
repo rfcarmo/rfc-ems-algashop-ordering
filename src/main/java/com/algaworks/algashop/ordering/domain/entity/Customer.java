@@ -56,6 +56,12 @@ public class Customer implements Serializable {
 
     public void addLoyaltyPoints(int points) {
         verifyIfIsChangeble();
+
+        if (points <= 0) {
+            throw new IllegalArgumentException(ERROR_LOYALTY_POINTS_ZERO_OR_NEGATIVE);
+        }
+
+        this.setLoyaltyPoints(this.loyaltyPoints() + points);
     }
 
     public void archive() {
@@ -216,6 +222,10 @@ public class Customer implements Serializable {
 
     private void setLoyaltyPoints(Integer loyaltyPoints) {
         Objects.requireNonNull(loyaltyPoints);
+
+        if (loyaltyPoints < 0) {
+            throw new IllegalArgumentException(ERROR_LOYALTY_POINTS_ZERO_OR_NEGATIVE);
+        }
 
         this.loyaltyPoints = loyaltyPoints;
     }
