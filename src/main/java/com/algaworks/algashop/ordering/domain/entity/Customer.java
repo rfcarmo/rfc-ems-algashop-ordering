@@ -58,7 +58,13 @@ public class Customer implements Serializable {
     }
 
     public void archive() {
-
+        this.setArchived(true);
+        this.setArchivedAt(OffsetDateTime.now());
+        this.setFullName("ANONYMOUS");
+        this.setEmail("archived_" + UUID.randomUUID() + "@anonymus.com");
+        this.setPhone("000000000");
+        this.setDocument("XXXXXXXX");
+        this.setBirthDate(null);
     }
 
     public void enablePromotionNotifications() {
