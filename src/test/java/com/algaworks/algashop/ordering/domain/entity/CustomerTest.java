@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
+import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
 import com.algaworks.algashop.ordering.domain.utility.IdGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,33 @@ class CustomerTest {
                     Assertions.assertThat(c.phone()).isEqualTo("000000000");
                     Assertions.assertThat(c.document()).isEqualTo("XXXXXXXX");
                     Assertions.assertThat(c.birthDate()).isNull();
+                    Assertions.assertThat(c.isPromotionNotificationsAllowed()).isFalse();
                 });
+    }
+
+    @Test
+    void given_archivedCustomer_when_tryToUpdate_then_shouldThrowException() {
+        Customer customer = new Customer(
+                IdGenerator.generateTimeBasedUUID(),
+                "ANONYMOUS",
+                null,
+                "anonymus@anonymus.com",
+                "000000000",
+                "00000000",
+                false,
+                true,
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                0);
+
+        Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
+                .isThrownBy(customer::archive);
+
+        Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
+                .isThrownBy(() -> customer.changeEmail("abcdef@hotmail.com"));
+
+        Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
+                .isThrownBy(() -> customer.changePhone("987654321"));
     }
 
 

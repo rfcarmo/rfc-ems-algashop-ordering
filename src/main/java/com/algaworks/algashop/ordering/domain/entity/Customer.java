@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
+import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
 import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
 
 import java.io.Serializable;
@@ -54,10 +55,12 @@ public class Customer implements Serializable {
     }
 
     public void addLoyaltyPoints(int points) {
-
+        verifyIfIsChangeble();
     }
 
     public void archive() {
+        verifyIfIsChangeble();
+
         this.setArchived(true);
         this.setArchivedAt(OffsetDateTime.now());
         this.setFullName("ANONYMOUS");
@@ -65,25 +68,36 @@ public class Customer implements Serializable {
         this.setPhone("000000000");
         this.setDocument("XXXXXXXX");
         this.setBirthDate(null);
+        this.setPromotionNotificationsAllowed(false);
     }
 
     public void enablePromotionNotifications() {
+        verifyIfIsChangeble();
+
         this.setPromotionNotificationsAllowed(true);
     }
 
     public void disablePromotionNotifications() {
+        verifyIfIsChangeble();
+
         this.setPromotionNotificationsAllowed(false);
     }
 
     public void changeName(String fullName) {
+        verifyIfIsChangeble();
+
         this.setFullName(fullName);
     }
 
     public void changeEmail(String email) {
+        verifyIfIsChangeble();
+
         this.setEmail(email);
     }
 
     public void changePhone(String phone) {
+        verifyIfIsChangeble();
+
         this.setPhone(phone);
     }
 
@@ -204,6 +218,12 @@ public class Customer implements Serializable {
         Objects.requireNonNull(loyaltyPoints);
 
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    private void verifyIfIsChangeble() {
+        if (this.isArchived()) {
+            throw new CustomerArchivedException();
+        }
     }
 
     @Override
