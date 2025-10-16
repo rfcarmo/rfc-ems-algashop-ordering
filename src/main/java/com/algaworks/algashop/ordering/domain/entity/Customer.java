@@ -6,6 +6,7 @@ import com.algaworks.algashop.ordering.domain.valueobject.Address;
 import com.algaworks.algashop.ordering.domain.valueobject.CustomerId;
 import com.algaworks.algashop.ordering.domain.valueobject.FullName;
 import com.algaworks.algashop.ordering.domain.valueobject.LoyaltyPoints;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,7 +31,8 @@ public class Customer implements Serializable {
     private LoyaltyPoints loyaltyPoints;
     private Address address;
 
-    public static Customer brandNew(FullName fullName, LocalDate birthDate, String email, String phone, String document,
+    @Builder(builderClassName = "BrandNewCustomerBuilder", builderMethodName = "brandNew")
+    private static Customer createBrandNew(FullName fullName, LocalDate birthDate, String email, String phone, String document,
                                     Boolean promotionNotificationsAllowed, Address address) {
         return new Customer(
                 new CustomerId(),
@@ -48,25 +50,7 @@ public class Customer implements Serializable {
         );
     }
 
-    public static Customer existing(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
-                                    Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
-                                    LoyaltyPoints loyaltyPoints, Address address) {
-        return new Customer(
-                id,
-                fullName,
-                birthDate,
-                email,
-                phone,
-                document,
-                promotionNotificationsAllowed,
-                archived,
-                registeredAt,
-                archivedAt,
-                loyaltyPoints,
-                address
-        );
-    }
-
+    @Builder(builderClassName = "ExistingCustomerBuilder", builderMethodName = "existing")
     private Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
                     Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
                     LoyaltyPoints loyaltyPoints, Address address) {
