@@ -2,6 +2,7 @@ package com.algaworks.algashop.ordering.domain.entity;
 
 import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
 import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
+import com.algaworks.algashop.ordering.domain.valueobject.Address;
 import com.algaworks.algashop.ordering.domain.valueobject.CustomerId;
 import com.algaworks.algashop.ordering.domain.valueobject.FullName;
 import com.algaworks.algashop.ordering.domain.valueobject.LoyaltyPoints;
@@ -27,9 +28,11 @@ public class Customer implements Serializable {
     private OffsetDateTime registeredAt;
     private OffsetDateTime archivedAt;
     private LoyaltyPoints loyaltyPoints;
+    private Address address;
 
     public Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
-                    Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt, LoyaltyPoints loyaltyPoints) {
+                    Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
+                    LoyaltyPoints loyaltyPoints, Address address) {
         this.setId(id);
         this.setFullName(fullName);
         this.setBirthDate(birthDate);
@@ -41,10 +44,11 @@ public class Customer implements Serializable {
         this.setRegisteredAt(registeredAt);
         this.setArchivedAt(archivedAt);
         this.setLoyaltyPoints(loyaltyPoints);
+        this.setAddress(address);
     }
 
     public Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
-                    Boolean promotionNotificationsAllowed, OffsetDateTime registeredAt) {
+                    Boolean promotionNotificationsAllowed, OffsetDateTime registeredAt, Address address) {
         this.setId(id);
         this.setFullName(fullName);
         this.setBirthDate(birthDate);
@@ -55,6 +59,7 @@ public class Customer implements Serializable {
         this.setRegisteredAt(registeredAt);
         this.setArchived(false);
         this.setLoyaltyPoints(LoyaltyPoints.ZERO);
+        this.setAddress(address);
     }
 
     public void addLoyaltyPoints(int points) {
@@ -74,6 +79,9 @@ public class Customer implements Serializable {
         this.setDocument("XXXXXXXX");
         this.setBirthDate(null);
         this.setPromotionNotificationsAllowed(false);
+
+        Address.AddressBuilder addressBuilder = this.address().toBuilder();
+        this.setAddress(addressBuilder.number("Anonymized").complement(null).build());
     }
 
     public void enablePromotionNotifications() {
@@ -104,6 +112,12 @@ public class Customer implements Serializable {
         verifyIfIsChangeble();
 
         this.setPhone(phone);
+    }
+
+    public void changeAddress(Address address) {
+        verifyIfIsChangeble();
+
+        this.setAddress(address);
     }
 
     public CustomerId id() {
@@ -148,6 +162,10 @@ public class Customer implements Serializable {
 
     public LoyaltyPoints loyaltyPoints() {
         return loyaltyPoints;
+    }
+
+    public Address address() {
+        return address;
     }
 
     private void setId(CustomerId id) {
@@ -219,6 +237,12 @@ public class Customer implements Serializable {
         Objects.requireNonNull(loyaltyPoints);
 
         this.loyaltyPoints = loyaltyPoints;
+    }
+
+    private void setAddress(Address address) {
+        Objects.requireNonNull(address);
+
+        this.address = address;
     }
 
     private void verifyIfIsChangeble() {

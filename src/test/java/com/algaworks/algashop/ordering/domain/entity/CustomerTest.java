@@ -1,9 +1,7 @@
 package com.algaworks.algashop.ordering.domain.entity;
 
 import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
-import com.algaworks.algashop.ordering.domain.valueobject.CustomerId;
-import com.algaworks.algashop.ordering.domain.valueobject.FullName;
-import com.algaworks.algashop.ordering.domain.valueobject.LoyaltyPoints;
+import com.algaworks.algashop.ordering.domain.valueobject.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +22,17 @@ class CustomerTest {
                             "123456789",
                             "AB123456",
                             false,
-                            OffsetDateTime.now());
+                            OffsetDateTime.now(),
+                            Address.builder()
+                                    .street("123 Main St")
+                                    .complement("Apt 101")
+                                    .neighborhood("Downtown")
+                                    .number("123")
+                                    .city("Metropolis")
+                                    .state("NY")
+                                    .zipCode(new ZipCode("12345678"))
+                                    .build()
+                    );
                 });
     }
 
@@ -38,7 +46,17 @@ class CustomerTest {
                 "123456789",
                 "AB123456",
                 false,
-                OffsetDateTime.now());
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("123 Main St")
+                        .complement("Apt 101")
+                        .neighborhood("Downtown")
+                        .number("123")
+                        .city("Metropolis")
+                        .state("NY")
+                        .zipCode(new ZipCode("12345678"))
+                        .build()
+        );
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> customer.changeEmail("invalid-email"));
@@ -54,7 +72,17 @@ class CustomerTest {
                 "123456789",
                 "AB123456",
                 false,
-                OffsetDateTime.now());
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("123 Main St")
+                        .complement("Apt 101")
+                        .neighborhood("Downtown")
+                        .number("123")
+                        .city("Metropolis")
+                        .state("NY")
+                        .zipCode(new ZipCode("12345678"))
+                        .build()
+        );
 
         customer.archive();
 
@@ -66,6 +94,17 @@ class CustomerTest {
                     Assertions.assertThat(c.document()).isEqualTo("XXXXXXXX");
                     Assertions.assertThat(c.birthDate()).isNull();
                     Assertions.assertThat(c.isPromotionNotificationsAllowed()).isFalse();
+                    Assertions.assertThat(c.address()).isEqualTo(
+                            Address.builder()
+                                    .street("123 Main St")
+                                    .complement(null)
+                                    .neighborhood("Downtown")
+                                    .number("Anonymized")
+                                    .city("Metropolis")
+                                    .state("NY")
+                                    .zipCode(new ZipCode("12345678"))
+                                    .build()
+                    );
                 });
     }
 
@@ -82,7 +121,17 @@ class CustomerTest {
                 true,
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                LoyaltyPoints.ZERO);
+                LoyaltyPoints.ZERO,
+                Address.builder()
+                        .street("123 Main St")
+                        .complement("Apt 101")
+                        .neighborhood("Downtown")
+                        .number("123")
+                        .city("Metropolis")
+                        .state("NY")
+                        .zipCode(new ZipCode("12345678"))
+                        .build()
+        );
 
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
                 .isThrownBy(customer::archive);
@@ -104,7 +153,17 @@ class CustomerTest {
                 "123456789",
                 "AB123456",
                 false,
-                OffsetDateTime.now());
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("123 Main St")
+                        .complement("Apt 101")
+                        .neighborhood("Downtown")
+                        .number("123")
+                        .city("Metropolis")
+                        .state("NY")
+                        .zipCode(new ZipCode("12345678"))
+                        .build()
+        );
 
         customer.addLoyaltyPoints(10);
         customer.addLoyaltyPoints(20);
@@ -122,7 +181,17 @@ class CustomerTest {
                 "123456789",
                 "AB123456",
                 false,
-                OffsetDateTime.now());
+                OffsetDateTime.now(),
+                Address.builder()
+                        .street("123 Main St")
+                        .complement("Apt 101")
+                        .neighborhood("Downtown")
+                        .number("123")
+                        .city("Metropolis")
+                        .state("NY")
+                        .zipCode(new ZipCode("12345678"))
+                        .build()
+        );
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> customer.addLoyaltyPoints(0));
