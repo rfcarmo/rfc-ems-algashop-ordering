@@ -30,7 +30,44 @@ public class Customer implements Serializable {
     private LoyaltyPoints loyaltyPoints;
     private Address address;
 
-    public Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
+    public static Customer brandNew(FullName fullName, LocalDate birthDate, String email, String phone, String document,
+                                    Boolean promotionNotificationsAllowed, Address address) {
+        return new Customer(
+                new CustomerId(),
+                fullName,
+                birthDate,
+                email,
+                phone,
+                document,
+                promotionNotificationsAllowed,
+                false,
+                OffsetDateTime.now(),
+                null,
+                LoyaltyPoints.ZERO,
+                address
+        );
+    }
+
+    public static Customer existing(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
+                                    Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
+                                    LoyaltyPoints loyaltyPoints, Address address) {
+        return new Customer(
+                id,
+                fullName,
+                birthDate,
+                email,
+                phone,
+                document,
+                promotionNotificationsAllowed,
+                archived,
+                registeredAt,
+                archivedAt,
+                loyaltyPoints,
+                address
+        );
+    }
+
+    private Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
                     Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
                     LoyaltyPoints loyaltyPoints, Address address) {
         this.setId(id);
@@ -44,21 +81,6 @@ public class Customer implements Serializable {
         this.setRegisteredAt(registeredAt);
         this.setArchivedAt(archivedAt);
         this.setLoyaltyPoints(loyaltyPoints);
-        this.setAddress(address);
-    }
-
-    public Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
-                    Boolean promotionNotificationsAllowed, OffsetDateTime registeredAt, Address address) {
-        this.setId(id);
-        this.setFullName(fullName);
-        this.setBirthDate(birthDate);
-        this.setEmail(email);
-        this.setPhone(phone);
-        this.setDocument(document);
-        this.setPromotionNotificationsAllowed(promotionNotificationsAllowed);
-        this.setRegisteredAt(registeredAt);
-        this.setArchived(false);
-        this.setLoyaltyPoints(LoyaltyPoints.ZERO);
         this.setAddress(address);
     }
 
