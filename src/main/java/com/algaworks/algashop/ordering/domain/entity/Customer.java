@@ -2,10 +2,7 @@ package com.algaworks.algashop.ordering.domain.entity;
 
 import com.algaworks.algashop.ordering.domain.exception.CustomerArchivedException;
 import com.algaworks.algashop.ordering.domain.validator.FieldValidations;
-import com.algaworks.algashop.ordering.domain.valueobject.Address;
-import com.algaworks.algashop.ordering.domain.valueobject.CustomerId;
-import com.algaworks.algashop.ordering.domain.valueobject.FullName;
-import com.algaworks.algashop.ordering.domain.valueobject.LoyaltyPoints;
+import com.algaworks.algashop.ordering.domain.valueobject.*;
 import lombok.Builder;
 
 import java.io.Serializable;
@@ -20,10 +17,10 @@ public class Customer implements Serializable {
 
     private CustomerId id;
     private FullName fullName;
-    private LocalDate birthDate;
-    private String email;
-    private String phone;
-    private String document;
+    private BirthDate birthDate;
+    private Email email;
+    private Phone phone;
+    private Document document;
     private Boolean promotionNotificationsAllowed;
     private Boolean archived;
     private OffsetDateTime registeredAt;
@@ -32,7 +29,7 @@ public class Customer implements Serializable {
     private Address address;
 
     @Builder(builderClassName = "BrandNewCustomerBuilder", builderMethodName = "brandNew")
-    private static Customer createBrandNew(FullName fullName, LocalDate birthDate, String email, String phone, String document,
+    private static Customer createBrandNew(FullName fullName, BirthDate birthDate, Email email, Phone phone, Document document,
                                     Boolean promotionNotificationsAllowed, Address address) {
         return new Customer(
                 new CustomerId(),
@@ -51,9 +48,10 @@ public class Customer implements Serializable {
     }
 
     @Builder(builderClassName = "ExistingCustomerBuilder", builderMethodName = "existing")
-    private Customer(CustomerId id, FullName fullName, LocalDate birthDate, String email, String phone, String document,
+    private Customer(CustomerId id, FullName fullName, BirthDate birthDate, Email email, Phone phone, Document document,
                     Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
                     LoyaltyPoints loyaltyPoints, Address address) {
+
         this.setId(id);
         this.setFullName(fullName);
         this.setBirthDate(birthDate);
@@ -80,9 +78,9 @@ public class Customer implements Serializable {
         this.setArchived(true);
         this.setArchivedAt(OffsetDateTime.now());
         this.setFullName(new FullName("Anonymous", "Customer"));
-        this.setEmail("archived_" + UUID.randomUUID() + "@anonymus.com");
-        this.setPhone("000000000");
-        this.setDocument("XXXXXXXX");
+        this.setEmail(new Email("archived_" + UUID.randomUUID() + "@anonymus.com"));
+        this.setPhone(new Phone("000000000"));
+        this.setDocument(new Document("XXXXXXXX"));
         this.setBirthDate(null);
         this.setPromotionNotificationsAllowed(false);
 
@@ -108,13 +106,13 @@ public class Customer implements Serializable {
         this.setFullName(fullName);
     }
 
-    public void changeEmail(String email) {
+    public void changeEmail(Email email) {
         verifyIfIsChangeble();
 
         this.setEmail(email);
     }
 
-    public void changePhone(String phone) {
+    public void changePhone(Phone phone) {
         verifyIfIsChangeble();
 
         this.setPhone(phone);
@@ -134,19 +132,19 @@ public class Customer implements Serializable {
         return fullName;
     }
 
-    public LocalDate birthDate() {
+    public BirthDate birthDate() {
         return birthDate;
     }
 
-    public String email() {
+    public Email email() {
         return email;
     }
 
-    public String phone() {
+    public Phone phone() {
         return phone;
     }
 
-    public String document() {
+    public Document document() {
         return document;
     }
 
@@ -186,32 +184,32 @@ public class Customer implements Serializable {
         this.fullName = fullName;
     }
 
-    private void setBirthDate(LocalDate birthDate) {
+    private void setBirthDate(BirthDate birthDate) {
         if (birthDate == null) {
             this.birthDate = null;
             return;
         }
 
-        if (birthDate.isAfter(LocalDate.now())) {
+        if (birthDate.value().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException(VALIDATION_ERROR_BIRTHDATE_MUST_IN_PAST);
         }
 
         this.birthDate = birthDate;
     }
 
-    private void setEmail(String email) {
-        FieldValidations.requiresValidEmail(email, VALIDATION_ERROR_INVALID_EMAIL);
+    private void setEmail(Email email) {
+        FieldValidations.requiresValidEmail(email.value(), VALIDATION_ERROR_INVALID_EMAIL);
 
         this.email = email;
     }
 
-    private void setPhone(String phone) {
+    private void setPhone(Phone phone) {
         Objects.requireNonNull(phone);
 
         this.phone = phone;
     }
 
-    private void setDocument(String document) {
+    private void setDocument(Document document) {
         Objects.requireNonNull(document);
 
         this.document = document;

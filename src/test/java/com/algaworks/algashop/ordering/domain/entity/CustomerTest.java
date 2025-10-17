@@ -5,14 +5,12 @@ import com.algaworks.algashop.ordering.domain.valueobject.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.OffsetDateTime;
-
 class CustomerTest {
 
     @Test
     void given_invalidEmail_when_createCustomer_then_shouldThrowException() {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> CustomerTestDataBuilder.brandNewCustomer().email("invalid-email").build());
+                .isThrownBy(() -> CustomerTestDataBuilder.brandNewCustomer().email(new Email("invalid-email")).build());
     }
 
     @Test
@@ -20,7 +18,7 @@ class CustomerTest {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> customer.changeEmail("invalid-email"));
+                .isThrownBy(() -> customer.changeEmail(new Email("invalid-email")));
     }
 
     @Test
@@ -32,9 +30,9 @@ class CustomerTest {
         Assertions.assertWith(customer,
                 c -> {
                     Assertions.assertThat(c.fullName()).isEqualTo(new FullName("Anonymous", "Customer"));
-                    Assertions.assertThat(c.email()).isNotEqualTo("johndoe@gmail.com");
-                    Assertions.assertThat(c.phone()).isEqualTo("000000000");
-                    Assertions.assertThat(c.document()).isEqualTo("XXXXXXXX");
+                    Assertions.assertThat(c.email()).isNotEqualTo(new Email("johndoe@gmail.com"));
+                    Assertions.assertThat(c.phone()).isEqualTo(new Phone("000000000"));
+                    Assertions.assertThat(c.document()).isEqualTo(new Document("XXXXXXXX"));
                     Assertions.assertThat(c.birthDate()).isNull();
                     Assertions.assertThat(c.isPromotionNotificationsAllowed()).isFalse();
                     Assertions.assertThat(c.address()).isEqualTo(
@@ -59,10 +57,10 @@ class CustomerTest {
                 .isThrownBy(customer::archive);
 
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
-                .isThrownBy(() -> customer.changeEmail("abcdef@hotmail.com"));
+                .isThrownBy(() -> customer.changeEmail(new Email("abcdef@hotmail.com")));
 
         Assertions.assertThatExceptionOfType(CustomerArchivedException.class)
-                .isThrownBy(() -> customer.changePhone("987654321"));
+                .isThrownBy(() -> customer.changePhone(new Phone("987654321")));
     }
 
     @Test
