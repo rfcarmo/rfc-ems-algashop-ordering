@@ -13,4 +13,6 @@ public class ErrorMessages {
 
     public static final String ERROR_LOYALTY_POINTS_ZERO_OR_NEGATIVE = "Loyalty points cannot be zero or negative";
 
+    public static final String ERROR_STATUS_CANNOT_BE_CHANGED = "Order status cannot be changed from %s to %s for order with ID %s";
+
 }
