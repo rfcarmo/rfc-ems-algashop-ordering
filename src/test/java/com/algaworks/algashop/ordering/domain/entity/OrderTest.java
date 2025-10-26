@@ -65,4 +65,28 @@ class OrderTest {
                 .isThrownBy(() -> items.clear());
     }
 
+    @Test
+    public void shouldCalculateTotals() {
+        Order order = Order.draft(new CustomerId());
+
+        ProductId productId = new ProductId();
+
+        order.addItem(
+                productId,
+                new ProductName("SSD 1TB"),
+                new Money("100.00"),
+                new Quantity(2)
+        );
+
+        order.addItem(
+                productId,
+                new ProductName("VGA RTX 4090"),
+                new Money("1000.00"),
+                new Quantity(1)
+        );
+
+        Assertions.assertThat(order.totalAmount().value()).isEqualTo("1200.00");
+        Assertions.assertThat(order.totalItems().value()).isEqualTo(3);
+    }
+
 }
