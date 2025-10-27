@@ -1,5 +1,7 @@
 package com.algaworks.algashop.ordering.domain.valueobject;
 
+import lombok.Builder;
+
 import java.util.Objects;
 
 /**
@@ -15,6 +17,7 @@ import java.util.Objects;
  *  - No construtor compacto, valide todos os campos com Objects.requireNonNull().
  */
 
+@Builder(toBuilder = true)
 public record ShippingInfo(FullName fullName, Document document, Phone phone, Address address) {
 
     public ShippingInfo {

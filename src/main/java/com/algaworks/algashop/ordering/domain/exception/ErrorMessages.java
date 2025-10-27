@@ -15,4 +15,6 @@ public class ErrorMessages {
 
     public static final String ERROR_STATUS_CANNOT_BE_CHANGED = "Order status cannot be changed from %s to %s for order with ID %s";
 
+    public static final String ERROR_INVALID_SHIPPING_DELIVERY_DATE = "Expected delivery date %s is invalid for shipping method %s";
+
 }
