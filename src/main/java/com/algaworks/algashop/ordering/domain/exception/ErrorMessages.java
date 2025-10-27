@@ -18,6 +18,15 @@ public class ErrorMessages {
 
     public static final String ERROR_INVALID_SHIPPING_DELIVERY_DATE = "Expected delivery date %s is invalid for shipping method %s";
 
-    public static final String ERROR_ORDER_CANNOT_BE_PLACED = "Order %s cannot be placed because it has no items";
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_ITEMS = "Order %s cannot be placed because it has no items";
 
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_NO_SHIPPING_INFO = "Order %s cannot be placed because it has no shipping information";
+
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_NO_BILLING_INFO = "Order %s cannot be placed because it has no billing information";
+
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_INVALID_SHIPPING_COST = "Order %s cannot be placed because it has an invalid shipping cost";
+
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_INVALID_EXPECTED_DELIVERY_DATE = "Order %s cannot be placed because it has an invalid expected delivery date";
+
+    public static final String ERROR_ORDER_CANNOT_BE_PLACED_NO_PAYMENT_METHOD = "Order %s cannot be placed because it has no payment method";
 }

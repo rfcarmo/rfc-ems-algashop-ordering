@@ -123,16 +123,7 @@ public class Order {
     }
 
     public void place() {
-        Objects.requireNonNull(this.shipping());
-        Objects.requireNonNull(this.billing());
-        Objects.requireNonNull(this.expectedDeliveryDate());
-        Objects.requireNonNull(this.shippingCost());
-        Objects.requireNonNull(this.paymentMethod());
-        Objects.requireNonNull(this.items());
-
-        if (this.items().isEmpty()) {
-            throw new OrderCannotBePlacedException(this.id());
-        }
+        verifyIfCanChangeToPlaced();
 
         this.changeStatus(OrderStatus.PLACED);
         this.setPlacedAt(OffsetDateTime.now());
@@ -272,6 +263,32 @@ public class Order {
         }
 
         this.setStatus(newOrderStatus);
+    }
+
+    private void verifyIfCanChangeToPlaced() {
+        if (this.items == null || this.items.isEmpty()) {
+            throw OrderCannotBePlacedException.noItems(this.id());
+        }
+
+        if (this.shipping() == null) {
+            throw OrderCannotBePlacedException.noShippingInfo(this.id());
+        }
+
+        if (this.billing() == null) {
+            throw OrderCannotBePlacedException.noBillingInfo(this.id());
+        }
+
+        if (this.shippingCost() == null || this.shippingCost().value().compareTo(BigDecimal.ZERO) < 0) {
+            throw OrderCannotBePlacedException.invalidShippingCost(this.id());
+        }
+
+        if (this.expectedDeliveryDate() == null || this.expectedDeliveryDate().isBefore(LocalDate.now())) {
+            throw OrderCannotBePlacedException.invalidExpectedDeliveryDate(this.id());
+        }
+
+        if (this.paymentMethod() == null) {
+            throw OrderCannotBePlacedException.noPaymentMethod(this.id());
+        }
     }
 
     private void setId(OrderId id) {
