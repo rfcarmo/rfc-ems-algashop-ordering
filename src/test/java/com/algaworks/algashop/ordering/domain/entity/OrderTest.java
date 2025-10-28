@@ -17,8 +17,27 @@ import java.util.Set;
 class OrderTest {
 
     @Test
-    public void shouldGenerate() {
-        Order draft = Order.draft(new CustomerId());
+    public void shouldGenerateDraftOrder() {
+        CustomerId customerId = new CustomerId();
+
+        Order order = Order.draft(customerId);
+
+        Assertions.assertWith(order, o -> {
+            Assertions.assertThat(o.id()).isNotNull();
+            Assertions.assertThat(o.customerId()).isEqualTo(customerId);
+            Assertions.assertThat(o.isDraft()).isTrue();
+            Assertions.assertThat(o.items()).isEmpty();
+            Assertions.assertThat(o.totalAmount()).isEqualTo(Money.ZERO);
+            Assertions.assertThat(o.totalItems()).isEqualTo(Quantity.ZERO);
+
+            Assertions.assertThat(o.placedAt()).isNull();
+            Assertions.assertThat(o.paidAt()).isNull();
+            Assertions.assertThat(o.cancelledAt()).isNull();
+            Assertions.assertThat(o.readyAt()).isNull();
+            Assertions.assertThat(o.billing()).isNull();
+            Assertions.assertThat(o.shipping()).isNull();
+            Assertions.assertThat(o.paymentMethod()).isNull();
+        });
     }
 
     @Test
