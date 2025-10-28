@@ -142,72 +142,27 @@ class OrderTest {
     }
 
     @Test
-    public void givenDraftOrder_whenChangeShippingInfo_shouldChangeShippingInfo() {
-        Address address = Address.builder()
-                .street("123 Main St")
-                .number("Apt 4B")
-                .neighborhood("Downtown")
-                .complement("Near the park")
-                .city("Anytown")
-                .state("CA")
-                .zipCode(new ZipCode("12345678"))
-                .build();
-
-
-        ShippingInfo shippingInfo = ShippingInfo.builder()
-                .address(address)
-                .document(new Document("123.456.789-00"))
-                .fullName(new FullName("John", "Doe"))
-                .phone(new Phone("(123) 456-7890"))
-                .build();
-
-        ShippingInfo expectedShippingInfo = ShippingInfo.builder()
-                .address(address)
-                .document(new Document("123.456.789-00"))
-                .fullName(new FullName("John", "Doe"))
-                .phone(new Phone("(123) 456-7890"))
-                .build();
+    public void givenDraftOrder_whenChangeShipping_shouldChangeShipping() {
+        Shipping shipping = OrderTestDataBuilder.aShipping();
 
         Order order = Order.draft(new CustomerId());
-        Money shippingCost = new Money("50.00");
-        LocalDate expectedDeliveryDate = LocalDate.now().plusDays(5);
 
-        order.chageShippingInfo(shippingInfo, shippingCost, expectedDeliveryDate);
+        order.chageShipping(shipping);
 
-        Assertions.assertWith(order, o -> {
-            Assertions.assertThat(o.shipping()).isEqualTo(expectedShippingInfo);
-            Assertions.assertThat(o.shippingCost().value()).isEqualByComparingTo("50.00");
-            Assertions.assertThat(o.expectedDeliveryDate()).isEqualTo(expectedDeliveryDate);
-        });
+        Assertions.assertWith(order, o -> Assertions.assertThat(o.shipping()).isEqualTo(shipping));
 
     }
 
     @Test
-    public void givenDraftOrderAndDeliveryDateInThePAst_whenChangeShippingInfo_shouldNotAllowChange() {
-        Address address = Address.builder()
-                .street("123 Main St")
-                .number("Apt 4B")
-                .neighborhood("Downtown")
-                .complement("Near the park")
-                .city("Anytown")
-                .state("CA")
-                .zipCode(new ZipCode("12345678"))
-                .build();
-
-
-        ShippingInfo shippingInfo = ShippingInfo.builder()
-                .address(address)
-                .document(new Document("123.456.789-00"))
-                .fullName(new FullName("John", "Doe"))
-                .phone(new Phone("(123) 456-7890"))
-                .build();
-
-        Order order = Order.draft(new CustomerId());
-        Money shippingCost = new Money("50.00");
+    public void givenDraftOrderAndDeliveryDateInThePast_whenChangeShippingInfo_shouldNotAllowChange() {
         LocalDate expectedDeliveryDate = LocalDate.now().minusDays(5);
 
+        Shipping shipping = OrderTestDataBuilder.aShipping().toBuilder().expectedDate(expectedDeliveryDate).build();
+
+        Order order = Order.draft(new CustomerId());
+
         Assertions.assertThatExceptionOfType(OrderInvalidShippingDeliveryDateException.class)
-                .isThrownBy(() -> order.chageShippingInfo(shippingInfo, shippingCost, expectedDeliveryDate));
+                .isThrownBy(() -> order.chageShipping(shipping));
 
     }
 
