@@ -67,6 +67,14 @@ public class OrderItem {
         return orderItem;
     }
 
+    void changeQuantity(Quantity quantity) {
+        Objects.requireNonNull(quantity);
+
+        this.setQuantity(quantity);
+
+        this.recalculateTotals();
+    }
+
     public OrderItemId id() {
         return id;
     }
@@ -152,4 +160,5 @@ public class OrderItem {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
