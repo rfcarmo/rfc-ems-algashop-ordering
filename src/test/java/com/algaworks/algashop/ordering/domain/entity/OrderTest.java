@@ -23,14 +23,11 @@ class OrderTest {
     public void shouldAddItem() {
         Order order = Order.draft(new CustomerId());
 
-        ProductId productId = new ProductId();
+        Product product = ProductTestDataBuilder.aProduct().build();
 
-        order.addItem(
-                productId,
-                new ProductName("Product Name"),
-                new Money("1000.00"),
-                new Quantity(2)
-        );
+        ProductId productId = product.productId();
+
+        order.addItem(product, new Quantity(2));
 
         Assertions.assertThat(order.items()).isNotEmpty();
 
@@ -41,8 +38,8 @@ class OrderTest {
         Assertions.assertWith(orderItem, i -> {
             Assertions.assertThat(i.id()).isNotNull();
             Assertions.assertThat(i.productId()).isEqualTo(productId);
-            Assertions.assertThat(i.productName().value()).isEqualTo("Product Name");
-            Assertions.assertThat(i.price().value()).isEqualByComparingTo("1000.00");
+            Assertions.assertThat(i.productName().value()).isEqualTo("Sample Product");
+            Assertions.assertThat(i.price().value()).isEqualByComparingTo("10.00");
             Assertions.assertThat(i.quantity().value()).isEqualTo(2);
         });
     }
@@ -51,14 +48,7 @@ class OrderTest {
     public void shouldGenerateExceptionWhenTryToChangeItemSet() {
         Order order = Order.draft(new CustomerId());
 
-        ProductId productId = new ProductId();
-
-        order.addItem(
-                productId,
-                new ProductName("Product Name"),
-                new Money("1000.00"),
-                new Quantity(2)
-        );
+        order.addItem(ProductTestDataBuilder.aProduct().build(), new Quantity(2));
 
         Set<OrderItem> items = order.items();
 
@@ -70,23 +60,11 @@ class OrderTest {
     public void shouldCalculateTotals() {
         Order order = Order.draft(new CustomerId());
 
-        ProductId productId = new ProductId();
+        order.addItem(ProductTestDataBuilder.aProduct().build(), new Quantity(2));
 
-        order.addItem(
-                productId,
-                new ProductName("SSD 1TB"),
-                new Money("100.00"),
-                new Quantity(2)
-        );
+        order.addItem(ProductTestDataBuilder.aProduct().build(), new Quantity(1));
 
-        order.addItem(
-                productId,
-                new ProductName("VGA RTX 4090"),
-                new Money("1000.00"),
-                new Quantity(1)
-        );
-
-        Assertions.assertThat(order.totalAmount().value()).isEqualTo("1200.00");
+        Assertions.assertThat(order.totalAmount().value()).isEqualTo("30.00");
         Assertions.assertThat(order.totalItems().value()).isEqualTo(3);
     }
 
@@ -235,12 +213,7 @@ class OrderTest {
     public void givenDraftOrder_whenChangeItem_shouldRecalculate() {
         Order order = Order.draft(new CustomerId());
 
-        order.addItem(
-                new ProductId(),
-                new ProductName("Product Name"),
-                new Money("10.00"),
-                new Quantity(2)
-        );
+        order.addItem(ProductTestDataBuilder.aProduct().build(), new Quantity(2));
 
         OrderItem orderItem = order.items().iterator().next();
 
