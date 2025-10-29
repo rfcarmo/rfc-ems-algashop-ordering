@@ -320,4 +320,25 @@ class OrderTest {
 
     }
 
+    @Test
+    public void givenPaidOrder_whenReady_shouldChangeToReady() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PAID).build();
+
+        order.markAsReady();
+
+        Assertions.assertThat(order.isReady()).isTrue();
+        Assertions.assertThat(order.readyAt()).isNotNull();
+    }
+
+    @Test
+    public void givenDraftOrder_whenReady_shouldNotChangeToReady() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.DRAFT).build();
+
+        Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
+                .isThrownBy(() -> order.markAsReady());
+
+        Assertions.assertThat(order.isReady()).isFalse();
+        Assertions.assertThat(order.readyAt()).isNull();
+    }
+
 }
