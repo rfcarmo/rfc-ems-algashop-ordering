@@ -38,7 +38,6 @@ public class OrderTestDataBuilder {
 
         switch (this.status) {
             case DRAFT -> {
-
             }
             case PLACED -> {
                 order.place();
@@ -48,8 +47,12 @@ public class OrderTestDataBuilder {
                 order.markAsPaid();
             }
             case READY -> {
+                order.place();
+                order.markAsPaid();
+                order.markAsReady();
             }
             case CANCELED -> {
+                order.cancel();
             }
         }
 

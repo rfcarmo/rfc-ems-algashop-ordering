@@ -11,6 +11,7 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Set;
 
 class OrderTest {
@@ -339,6 +340,59 @@ class OrderTest {
 
         Assertions.assertThat(order.isReady()).isFalse();
         Assertions.assertThat(order.readyAt()).isNull();
+    }
+
+    @Test
+    public void givenDraftOrder_whenCancel_shouldChangeToCancel() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.DRAFT).build();
+
+        order.cancel();
+
+        Assertions.assertThat(order.isCanceled()).isTrue();
+        Assertions.assertThat(order.cancelledAt()).isNotNull();
+    }
+
+    @Test
+    public void givenPlacedOrder_whenCancel_shouldChangeToCancel() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
+
+        order.cancel();
+
+        Assertions.assertThat(order.isCanceled()).isTrue();
+        Assertions.assertThat(order.cancelledAt()).isNotNull();
+    }
+
+    @Test
+    public void givenPaidOrder_whenCancel_shouldChangeToCancel() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PAID).build();
+
+        order.cancel();
+
+        Assertions.assertThat(order.isCanceled()).isTrue();
+        Assertions.assertThat(order.cancelledAt()).isNotNull();
+    }
+
+    @Test
+    public void givenReadyOrder_whenCancel_shouldChangeToCancel() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.READY).build();
+
+        order.cancel();
+
+        Assertions.assertThat(order.isCanceled()).isTrue();
+        Assertions.assertThat(order.cancelledAt()).isNotNull();
+    }
+
+    @Test
+    public void givenCancelOrder_whenCancel_shouldNotAllow() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.CANCELED).build();
+
+        OffsetDateTime fixedCancelledAt = order.cancelledAt();
+
+        Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
+                .isThrownBy(() -> order.cancel());
+
+        Assertions.assertThat(order.isCanceled()).isTrue();
+        Assertions.assertThat(order.cancelledAt()).isEqualTo(fixedCancelledAt);
     }
 
 }
