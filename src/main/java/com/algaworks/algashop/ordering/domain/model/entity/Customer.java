@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static com.algaworks.algashop.ordering.domain.model.exception.ErrorMessages.*;
 
-public class Customer implements Serializable {
+public class Customer implements AggregateRoot<CustomerId>, Serializable {
 
     private CustomerId id;
     private FullName fullName;

@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Builder(builderClassName = "ExistingOrderBuilder", builderMethodName = "existing")
-public class Order {
+public class Order implements AggregateRoot<OrderId> {
 
     private OrderId id;
 
