@@ -25,7 +25,7 @@ public class OrderFactory {
         Objects.requireNonNull(quantity);
 
         Order order = Order.draft(customerId);
-        order.chageShipping(shipping);
+        order.changeShipping(shipping);
         order.changeBillingInfo(billing);
         order.changePaymentMethod(paymentMethod);
         order.addItem(product, quantity);

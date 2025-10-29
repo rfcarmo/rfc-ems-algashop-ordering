@@ -27,7 +27,7 @@ public class OrderTestDataBuilder {
 
     public Order build() {
         Order order = Order.draft(customerId);
-        order.chageShipping(shipping);
+        order.changeShipping(shipping);
         order.changeBillingInfo(billing);
         order.changePaymentMethod(paymentMethod);
 
@@ -89,6 +89,16 @@ public class OrderTestDataBuilder {
                 .fullName(new FullName("John", "Doe"))
                 .phone(new Phone("(123) 456-7890"))
                 .email(new Email("John@email.com"))
+                .build();
+    }
+
+    public static Billing aAltBilling() {
+        return Billing.builder()
+                .address(anAddress())
+                .document(new Document("999.777.888-11"))
+                .fullName(new FullName("Carol", "Pie"))
+                .phone(new Phone("(444) 123-12340"))
+                .email(new Email("carol@email.com"))
                 .build();
     }
 
