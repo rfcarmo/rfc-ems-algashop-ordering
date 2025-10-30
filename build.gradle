@@ -42,3 +42,29 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+    filter {
+        excludeTestsMatching("*IT")
+    }
+}
+
+tasks.named('check') {
+    dependsOn(test, integrationTest)
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    shouldRunAfter tasks.test
+    useJUnitPlatform()
+    testLogging {
+        events("passed")
+    }
+    filter {
+        includeTestsMatching("*IT")
+        excludeTestsMatching("*Test")
+    }
+}
