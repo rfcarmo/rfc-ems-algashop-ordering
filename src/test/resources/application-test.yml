@@ -3,7 +3,7 @@ spring:
     name: ordering
 
   datasource:
-    url: 'jdbc:h2:mem:ordering-tst'
+    url: 'jdbc:h2:mem:ordering-tst;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE'
     username: sa
     password: '123'
   h2:
