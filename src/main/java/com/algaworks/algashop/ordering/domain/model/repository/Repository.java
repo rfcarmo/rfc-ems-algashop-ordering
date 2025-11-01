@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface Repository<T extends AggregateRoot<ID>, ID> {
 
-    Optional<T> ofID(ID id);
+    Optional<T> ofId(ID id);
 
     boolean existis(ID id);
 
