@@ -44,6 +44,8 @@ public class Order implements AggregateRoot<OrderId> {
 
     private Set<OrderItem> items;
 
+    private Long version;
+
     public Order(OrderId id,
                  CustomerId customerId,
                  Money totalAmount,
@@ -56,7 +58,8 @@ public class Order implements AggregateRoot<OrderId> {
                  Shipping shipping,
                  OrderStatus status,
                  PaymentMethod paymentMethod,
-                 Set<OrderItem> items) {
+                 Set<OrderItem> items,
+                 Long version) {
 
         setId(id);
         setCustomerId(customerId);
@@ -71,6 +74,7 @@ public class Order implements AggregateRoot<OrderId> {
         setStatus(status);
         setPaymentMethod(paymentMethod);
         setItems(items);
+        setVersion(version);
     }
 
     public static Order draft(CustomerId customerId) {
@@ -87,7 +91,8 @@ public class Order implements AggregateRoot<OrderId> {
                 null,
                 OrderStatus.DRAFT,
                 null,
-                new HashSet<>()
+                new HashSet<>(),
+                null
         );
     }
 
@@ -259,6 +264,10 @@ public class Order implements AggregateRoot<OrderId> {
         return Collections.unmodifiableSet(this.items);
     }
 
+    public Long version() {
+        return version;
+    }
+
     private void verifyIfChangeable() {
         if (!this.isDraft()) {
             throw new OrderCannotBeEditedException(this.id(), this.status());
@@ -387,6 +396,10 @@ public class Order implements AggregateRoot<OrderId> {
         Objects.requireNonNull(items);
 
         this.items = items;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override
