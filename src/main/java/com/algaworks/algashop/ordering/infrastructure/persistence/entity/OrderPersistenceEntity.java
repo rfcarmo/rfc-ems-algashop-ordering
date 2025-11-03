@@ -11,14 +11,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(of = "id")
 @Table(name = "\"order\"")
@@ -92,4 +92,56 @@ public class OrderPersistenceEntity {
             @AttributeOverride(name = "address.zipCode", column = @Column(name = "shipping_address_zipCode"))
     })
     private ShippingEmbeddable shipping;
+
+    @Builder
+    public OrderPersistenceEntity(Long id, UUID customerId, BigDecimal totalAmount, Integer totalItems, String status,
+                                  String paymentMethod, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime cancelledAt,
+                                  OffsetDateTime readyAt, UUID createdByUserId, OffsetDateTime lastModifiedAt, UUID lastModifiedByUserId,
+                                  Long version, BillingEmbeddable billing, ShippingEmbeddable shipping, Set<OrderItemPersistenceEntity> items) {
+
+        this.id = id;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.totalItems = totalItems;
+        this.status = status;
+        this.paymentMethod = paymentMethod;
+        this.placedAt = placedAt;
+        this.paidAt = paidAt;
+        this.cancelledAt = cancelledAt;
+        this.readyAt = readyAt;
+        this.createdByUserId = createdByUserId;
+        this.lastModifiedAt = lastModifiedAt;
+        this.lastModifiedByUserId = lastModifiedByUserId;
+        this.version = version;
+        this.billing = billing;
+        this.shipping = shipping;
+        this.replaceItems(items);
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderItemPersistenceEntity> items = new HashSet<>();
+
+    public void replaceItems(Set<OrderItemPersistenceEntity> items) {
+        if ((items == null) || items.isEmpty())  {
+            this.setItems(new HashSet<>());
+            return;
+        }
+
+        items.forEach(i -> i.setOrder(this));
+        this.setItems(items);
+    }
+
+    public void addItem(OrderItemPersistenceEntity item) {
+        if (item == null) {
+            return;
+        }
+
+        if (this.getItems() == null) {
+            this.setItems(new HashSet<>());
+
+        }
+
+        item.setOrder(this);
+        this.getItems().add(item);
+    }
 }

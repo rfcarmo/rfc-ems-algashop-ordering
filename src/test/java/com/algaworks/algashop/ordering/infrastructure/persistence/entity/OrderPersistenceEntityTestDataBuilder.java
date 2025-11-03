@@ -4,6 +4,7 @@ import com.algaworks.algashop.ordering.domain.model.utility.IdGenerator;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 public class OrderPersistenceEntityTestDataBuilder {
 
@@ -15,9 +16,30 @@ public class OrderPersistenceEntityTestDataBuilder {
                 .id(IdGenerator.generateTSID().toLong())
                 .customerId(IdGenerator.generateTimeBasedUUID())
                 .totalItems(2)
-                .totalAmount(new BigDecimal(1000))
+                .totalAmount(new BigDecimal(600))
                 .status("PLACED")
                 .paymentMethod("CREDIT_CARD")
-                .placedAt(OffsetDateTime.now());
+                .placedAt(OffsetDateTime.now())
+                .items(Set.of(existingOrderItem().build(), existingAltOrderItem().build()));
+    }
+
+    public static OrderItemPersistenceEntity.OrderItemPersistenceEntityBuilder existingOrderItem() {
+        return OrderItemPersistenceEntity.builder()
+                .id(IdGenerator.generateTSID().toLong())
+                .productId(IdGenerator.generateTimeBasedUUID())
+                .productName("Product 1")
+                .quantity(1)
+                .price(new BigDecimal(500))
+                .totalAmount(new BigDecimal(500));
+    }
+
+    public static OrderItemPersistenceEntity.OrderItemPersistenceEntityBuilder existingAltOrderItem() {
+        return OrderItemPersistenceEntity.builder()
+                .id(IdGenerator.generateTSID().toLong())
+                .productId(IdGenerator.generateTimeBasedUUID())
+                .productName("Product 2")
+                .quantity(1)
+                .price(new BigDecimal(100))
+                .totalAmount(new BigDecimal(100));
     }
 }
