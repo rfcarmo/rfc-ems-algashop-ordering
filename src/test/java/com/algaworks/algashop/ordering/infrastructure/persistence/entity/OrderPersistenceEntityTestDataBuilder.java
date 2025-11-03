@@ -14,7 +14,7 @@ public class OrderPersistenceEntityTestDataBuilder {
     public static OrderPersistenceEntity.OrderPersistenceEntityBuilder existingOrder() {
         return OrderPersistenceEntity.builder()
                 .id(IdGenerator.generateTSID().toLong())
-                .customerId(IdGenerator.generateTimeBasedUUID())
+                .customer(CustomerPersistenceEntityTestDataBuilder.aCustomer().build())
                 .totalItems(2)
                 .totalAmount(new BigDecimal(600))
                 .status("PLACED")

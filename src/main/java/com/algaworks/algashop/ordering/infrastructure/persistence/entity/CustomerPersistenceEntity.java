@@ -62,4 +62,27 @@ public class CustomerPersistenceEntity {
     })
     private AddressEmbeddable address;
 
+    @Builder
+    public CustomerPersistenceEntity(UUID id, String firstName, String lastName, LocalDate birthDate, String email, String phone,
+                                     String document, Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt,
+                                     OffsetDateTime archivedAt, Integer loyaltyPoints, UUID createdByUserId, OffsetDateTime lastModifiedAt,
+                                     UUID lastModifiedByUserId, Long version, AddressEmbeddable address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.phone = phone;
+        this.document = document;
+        this.promotionNotificationsAllowed = promotionNotificationsAllowed;
+        this.archived = archived;
+        this.registeredAt = registeredAt;
+        this.archivedAt = archivedAt;
+        this.loyaltyPoints = loyaltyPoints;
+        this.createdByUserId = createdByUserId;
+        this.lastModifiedAt = lastModifiedAt;
+        this.lastModifiedByUserId = lastModifiedByUserId;
+        this.version = version;
+        this.address = address;
+    }
 }

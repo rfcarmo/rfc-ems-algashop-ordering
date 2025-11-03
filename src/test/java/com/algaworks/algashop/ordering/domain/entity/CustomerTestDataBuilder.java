@@ -9,6 +9,8 @@ import java.time.OffsetDateTime;
 
 public class CustomerTestDataBuilder {
 
+    public static final CustomerId DEFAULT_CUSTOMER_ID = new CustomerId();
+
     private CustomerTestDataBuilder() {
     }
 
@@ -33,7 +35,7 @@ public class CustomerTestDataBuilder {
 
     public static Customer.ExistingCustomerBuilder existingAnonymizedCustomer() {
         return Customer.existing()
-                .id(new CustomerId())
+                .id(DEFAULT_CUSTOMER_ID)
                 .fullName(new FullName("Anonymous", "Customer"))
                 .birthDate(null)
                 .email(new Email("anonymus@anonymus.com"))
@@ -56,7 +58,7 @@ public class CustomerTestDataBuilder {
 
     public static Customer.ExistingCustomerBuilder existingCustomer() {
         return Customer.existing()
-                .id(new CustomerId())
+                .id(DEFAULT_CUSTOMER_ID)
                 .fullName(new FullName("Giulia", "Noel"))
                 .birthDate(new BirthDate(LocalDate.of(1990, 9, 18)))
                 .email(new Email("giulianoel@email.com"))
