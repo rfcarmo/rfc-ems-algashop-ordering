@@ -65,10 +65,12 @@ public class OrdersPersistenceProvider implements Orders {
 
     @Override
     public List<Order> placedByCustomerInYear(CustomerId customerId, Year year) {
-        OffsetDateTime start = year.atDay(1).atStartOfDay().atOffset(ZoneOffset.UTC);
-        OffsetDateTime end = start.plusYears(1).minusNanos(1);
+//        OffsetDateTime start = year.atDay(1).atStartOfDay().atOffset(ZoneOffset.UTC);
+//        OffsetDateTime end = start.plusYears(1).minusNanos(1);
+//
+//        List<OrderPersistenceEntity> entities = persistenceRepository.placedByCustomerInYear(customerId.value(), start, end);
 
-        List<OrderPersistenceEntity> entities = persistenceRepository.findByCustomer_IdAndPlacedAtBetween(customerId.value(), start, end);
+        List<OrderPersistenceEntity> entities = persistenceRepository.placedByCustomerInYear(customerId.value(), year.getValue());
 
         return entities.stream()
                 .map(e -> disassembler.toDomainEntity(e))
