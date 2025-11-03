@@ -113,7 +113,7 @@ class OrdersIT {
 
         orders.add(order);
 
-        Assertions.assertThat(orders.existis(order.id())).isTrue();
-        Assertions.assertThat(orders.existis(new OrderId())).isFalse();
+        Assertions.assertThat(orders.exists(order.id())).isTrue();
+        Assertions.assertThat(orders.exists(new OrderId())).isFalse();
     }
 }

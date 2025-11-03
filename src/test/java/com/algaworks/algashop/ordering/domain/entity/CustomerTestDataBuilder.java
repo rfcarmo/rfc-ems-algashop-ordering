@@ -53,4 +53,29 @@ public class CustomerTestDataBuilder {
                         .zipCode(new ZipCode("12345678"))
                         .build());
     }
+
+    public static Customer.ExistingCustomerBuilder existingCustomer() {
+        return Customer.existing()
+                .id(new CustomerId())
+                .fullName(new FullName("Giulia", "Noel"))
+                .birthDate(new BirthDate(LocalDate.of(1990, 9, 18)))
+                .email(new Email("giulianoel@email.com"))
+                .phone(new Phone("999888777"))
+                .document(new Document("CD987654"))
+                .promotionNotificationsAllowed(false)
+                .archived(false)
+                .registeredAt(OffsetDateTime.now().minusDays(1))
+                .archivedAt(null)
+                .loyaltyPoints(new LoyaltyPoints(20))
+                .address(
+                        Address.builder()
+                                .street("Bourbon Street")
+                                .complement("Apt. 114")
+                                .neighborhood("North Ville")
+                                .number("1133")
+                                .city("York")
+                                .state("South California")
+                                .zipCode(new ZipCode("66667777"))
+                                .build());
+    }
 }

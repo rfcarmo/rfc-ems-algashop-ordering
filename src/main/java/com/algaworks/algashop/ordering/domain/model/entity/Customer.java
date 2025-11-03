@@ -28,6 +28,7 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
     private OffsetDateTime archivedAt;
     private LoyaltyPoints loyaltyPoints;
     private Address address;
+    private Long version;
 
     @Builder(builderClassName = "BrandNewCustomerBuilder", builderMethodName = "brandNew")
     private static Customer createBrandNew(FullName fullName, BirthDate birthDate, Email email, Phone phone, Document document,
@@ -44,14 +45,15 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
                 OffsetDateTime.now(),
                 null,
                 LoyaltyPoints.ZERO,
-                address
+                address,
+                null
         );
     }
 
     @Builder(builderClassName = "ExistingCustomerBuilder", builderMethodName = "existing")
     private Customer(CustomerId id, FullName fullName, BirthDate birthDate, Email email, Phone phone, Document document,
                     Boolean promotionNotificationsAllowed, Boolean archived, OffsetDateTime registeredAt, OffsetDateTime archivedAt,
-                    LoyaltyPoints loyaltyPoints, Address address) {
+                    LoyaltyPoints loyaltyPoints, Address address, Long version) {
 
         this.setId(id);
         this.setFullName(fullName);
@@ -65,6 +67,7 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
         this.setArchivedAt(archivedAt);
         this.setLoyaltyPoints(loyaltyPoints);
         this.setAddress(address);
+        this.setVersion(version);
     }
 
     public void addLoyaltyPoints(int points) {
@@ -173,6 +176,10 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
         return address;
     }
 
+    public Long version() {
+        return version;
+    }
+
     private void setId(CustomerId id) {
         Objects.requireNonNull(id);
 
@@ -248,6 +255,10 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
         Objects.requireNonNull(address);
 
         this.address = address;
+    }
+
+    private void setVersion(Long version) {
+        this.version = version;
     }
 
     private void verifyIfIsChangeble() {
