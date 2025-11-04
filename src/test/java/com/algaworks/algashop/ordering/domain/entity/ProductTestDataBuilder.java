@@ -41,4 +41,12 @@ public class ProductTestDataBuilder {
                 .inStock(true);
     }
 
+    public static Product.ProductBuilder aAltProductLowPrice() {
+        return Product.builder()
+                .productId(new ProductId())
+                .productName(new ProductName("Hellermann Cable Ties"))
+                .price(new Money("0.08"))
+                .inStock(true);
+    }
+
 }

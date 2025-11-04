@@ -70,10 +70,14 @@ public class Customer implements AggregateRoot<CustomerId>, Serializable {
         this.setVersion(version);
     }
 
-    public void addLoyaltyPoints(int points) {
+    public void addLoyaltyPoints(LoyaltyPoints points) {
         verifyIfIsChangeble();
 
-        this.setLoyaltyPoints(this.loyaltyPoints().add(new LoyaltyPoints(points)));
+        if (points.equals(LoyaltyPoints.ZERO)) {
+            return;
+        }
+
+        this.setLoyaltyPoints(this.loyaltyPoints().add(points));
     }
 
     public void archive() {

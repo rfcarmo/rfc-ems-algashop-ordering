@@ -37,8 +37,8 @@ public class OrderTestDataBuilder {
         order.changePaymentMethod(paymentMethod);
 
         if (withItems) {
-            order.addItem(ProductTestDataBuilder.aAltProductMemoryRam().build(), new Quantity(2));
-            order.addItem(ProductTestDataBuilder.aAltProductSSD().build(), new Quantity(4));
+            order.addItem(ProductTestDataBuilder.aAltProductMemoryRam().build(), new Quantity(4));
+            order.addItem(ProductTestDataBuilder.aAltProductSSD().build(), new Quantity(2));
         }
 
         switch (this.status) {
@@ -89,6 +89,19 @@ public class OrderTestDataBuilder {
                 .expectedDate(LocalDate.now().plusWeeks(2))
                 .build();
     }
+    public static Shipping aAltFreeShipping() {
+        return Shipping.builder()
+                .address(anAltAddress())
+                .recipient(Recipient.builder()
+                        .document(new Document("000.111.222-33"))
+                        .fullName(new FullName("Marie", "Jones"))
+                        .phone(new Phone("(123) 456-9876"))
+                        .build())
+                .cost(Money.ZERO)
+                .expectedDate(LocalDate.now().plusWeeks(2))
+                .build();
+    }
+
 
     public static Billing aBilling() {
         return Billing.builder()

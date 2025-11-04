@@ -68,8 +68,8 @@ class CustomerTest {
     void given_brandNew_when_addLoyaltyPoints_then_shouldSumPoints() {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
 
-        customer.addLoyaltyPoints(10);
-        customer.addLoyaltyPoints(20);
+        customer.addLoyaltyPoints(new LoyaltyPoints(10));
+        customer.addLoyaltyPoints(new LoyaltyPoints(20));
 
         Assertions.assertThat(customer.loyaltyPoints().value()).isEqualTo(30);
     }
@@ -78,10 +78,10 @@ class CustomerTest {
     void given_brandNew_when_addInvalidLoyaltyPoints_then_shouldThrowException() {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
 
-        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> customer.addLoyaltyPoints(0));
+        /*Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> customer.addLoyaltyPoints(new LoyaltyPoints(0)));*/
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> customer.addLoyaltyPoints(-1));
+                .isThrownBy(() -> customer.addLoyaltyPoints(new LoyaltyPoints(-1)));
     }
 }
