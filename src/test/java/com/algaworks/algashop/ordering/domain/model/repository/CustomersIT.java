@@ -116,4 +116,14 @@ class CustomersIT {
 
         Assertions.assertThat(customer).isNotPresent();
     }
+
+    @Test
+    public void shouldValidateIfEmailIsUnique() {
+        Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+        customers.add(customer);
+
+        Assertions.assertThat(customers.isEmailUnique(customer.email(), customer.id())).isTrue();
+        Assertions.assertThat(customers.isEmailUnique(customer.email(), new CustomerId())).isFalse();
+        Assertions.assertThat(customers.isEmailUnique(new Email("kkkkkk@hahaha.com"), new CustomerId())).isTrue();
+    }
 }

@@ -66,6 +66,11 @@ public class CustomersPersistenceProvider implements Customers {
                 .map(c -> disassembler.toDomainEntity(c));
     }
 
+    @Override
+    public boolean isEmailUnique(Email email, CustomerId customerId) {
+        return !persistenceRepository.existsByEmailAndIdNot(email.value(), customerId.value());
+    }
+
     private void insert(Customer aggregateRoot) {
         CustomerPersistenceEntity customerPersistenceEntity = assembler.fromDomain(aggregateRoot);
 
