@@ -55,7 +55,7 @@ public class OrderItem {
                 new OrderItemId(),
                 orderId,
                 product.productId(),
-                product.productName(),
+                product.name(),
                 product.price(),
                 quantity,
                 Money.ZERO

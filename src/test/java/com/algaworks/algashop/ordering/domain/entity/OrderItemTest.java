@@ -25,7 +25,7 @@ class OrderItemTest {
             Assertions.assertThat(o.id()).isNotNull();
             Assertions.assertThat(o.orderId()).isEqualTo(orderId);
             Assertions.assertThat(o.productId()).isEqualTo(product.productId());
-            Assertions.assertThat(o.productName()).isEqualTo(product.productName());
+            Assertions.assertThat(o.productName()).isEqualTo(product.name());
             Assertions.assertThat(o.price()).isEqualTo(product.price());
             Assertions.assertThat(o.quantity()).isEqualTo(quantity);
         });

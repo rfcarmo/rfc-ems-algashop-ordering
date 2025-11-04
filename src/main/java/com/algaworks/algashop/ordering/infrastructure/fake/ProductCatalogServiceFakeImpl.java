@@ -14,7 +14,7 @@ public class ProductCatalogServiceFakeImpl implements ProductCatalogService {
     public Optional<Product> ofId(ProductId productId) {
         Product product = Product.builder()
                 .productId(productId)
-                .productName(new ProductName("Fake Product"))
+                .name(new ProductName("Fake Product"))
                 .price(new Money("100"))
                 .inStock(true)
                 .build();

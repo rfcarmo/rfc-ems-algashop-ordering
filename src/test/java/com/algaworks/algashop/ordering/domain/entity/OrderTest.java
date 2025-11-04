@@ -211,7 +211,7 @@ class OrderTest {
 
         Assertions.assertWith(orderItem, i -> {
             Assertions.assertThat(i.productId()).isEqualTo(product.productId());
-            Assertions.assertThat(i.productName()).isEqualTo(product.productName());
+            Assertions.assertThat(i.productName()).isEqualTo(product.name());
             Assertions.assertThat(i.price()).isEqualTo(product.price());
             Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(2));
         });

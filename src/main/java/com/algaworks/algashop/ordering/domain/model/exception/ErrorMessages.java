@@ -31,4 +31,10 @@ public class ErrorMessages {
     public static final String ERROR_PRODUCT_OUT_OF_STOCK = "Product with ID %s is out of stock";
 
     public static final String ERROR_ORDER_CANNOT_BE_EDITED = "Order with ID %s cannot be edited because its status is %s";
+
+    public static final String ERROR_SHOPPING_CART_DOES_NOT_CONTAIN_ITEM = "Shopping cart with ID %s does not contain item with ID %s";
+
+    public static final String ERROR_SHOPPING_CART_ITEM_INCOMPATIBLE_PRODUCT = "Shopping cart item with ID %s is incompatible with product ID %s";
+
+    public static final String ERROR_SHOPPING_CART_DOES_NOT_CONTAIN_PRODUCT = "Shopping cart with ID %s does not contain product ID %s";
 }
