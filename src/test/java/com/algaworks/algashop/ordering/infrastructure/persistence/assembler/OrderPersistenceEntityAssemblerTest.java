@@ -53,7 +53,7 @@ class OrderPersistenceEntityAssemblerTest {
                     Assertions.assertThat(p.getPaymentMethod()).isEqualTo(order.paymentMethod().name());
                     Assertions.assertThat(p.getPlacedAt()).isEqualTo(order.placedAt());
                     Assertions.assertThat(p.getPaidAt()).isEqualTo(order.paidAt());
-                    Assertions.assertThat(p.getCancelledAt()).isEqualTo(order.cancelledAt());
+                    Assertions.assertThat(p.getCanceledAt()).isEqualTo(order.canceledAt());
                     Assertions.assertThat(p.getReadyAt()).isEqualTo(order.readyAt());
                 }
         );

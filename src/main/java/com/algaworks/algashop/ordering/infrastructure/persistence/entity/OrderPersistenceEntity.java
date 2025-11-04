@@ -45,7 +45,7 @@ public class OrderPersistenceEntity {
 
     private OffsetDateTime paidAt;
 
-    private OffsetDateTime cancelledAt;
+    private OffsetDateTime canceledAt;
 
     private OffsetDateTime readyAt;
 
@@ -97,7 +97,7 @@ public class OrderPersistenceEntity {
 
     @Builder
     public OrderPersistenceEntity(Long id, CustomerPersistenceEntity customer, BigDecimal totalAmount, Integer totalItems, String status,
-                                  String paymentMethod, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime cancelledAt,
+                                  String paymentMethod, OffsetDateTime placedAt, OffsetDateTime paidAt, OffsetDateTime canceledAt,
                                   OffsetDateTime readyAt, UUID createdByUserId, OffsetDateTime lastModifiedAt, UUID lastModifiedByUserId,
                                   Long version, BillingEmbeddable billing, ShippingEmbeddable shipping, Set<OrderItemPersistenceEntity> items) {
 
@@ -109,7 +109,7 @@ public class OrderPersistenceEntity {
         this.paymentMethod = paymentMethod;
         this.placedAt = placedAt;
         this.paidAt = paidAt;
-        this.cancelledAt = cancelledAt;
+        this.canceledAt = canceledAt;
         this.readyAt = readyAt;
         this.createdByUserId = createdByUserId;
         this.lastModifiedAt = lastModifiedAt;

@@ -30,7 +30,7 @@ public class Order implements AggregateRoot<OrderId> {
 
     private OffsetDateTime paidAt;
 
-    private OffsetDateTime cancelledAt;
+    private OffsetDateTime canceledAt;
 
     private OffsetDateTime readyAt;
 
@@ -52,7 +52,7 @@ public class Order implements AggregateRoot<OrderId> {
                  Quantity totalItems,
                  OffsetDateTime placedAt,
                  OffsetDateTime paidAt,
-                 OffsetDateTime cancelledAt,
+                 OffsetDateTime canceledAt,
                  OffsetDateTime readyAt,
                  Billing billing,
                  Shipping shipping,
@@ -67,7 +67,7 @@ public class Order implements AggregateRoot<OrderId> {
         setTotalItems(totalItems);
         setPlacedAt(placedAt);
         setPaidAt(paidAt);
-        setCancelledAt(cancelledAt);
+        setCanceledAt(canceledAt);
         setReadyAt(readyAt);
         setBilling(billing);
         setShipping(shipping);
@@ -149,7 +149,7 @@ public class Order implements AggregateRoot<OrderId> {
 
     public void cancel() {
         this.changeStatus(OrderStatus.CANCELED);
-        this.setCancelledAt(OffsetDateTime.now());
+        this.setCanceledAt(OffsetDateTime.now());
     }
 
     public void changePaymentMethod(PaymentMethod paymentMethod) {
@@ -236,8 +236,8 @@ public class Order implements AggregateRoot<OrderId> {
         return paidAt;
     }
 
-    public OffsetDateTime cancelledAt() {
-        return cancelledAt;
+    public OffsetDateTime canceledAt() {
+        return canceledAt;
     }
 
     public OffsetDateTime readyAt() {
@@ -366,8 +366,8 @@ public class Order implements AggregateRoot<OrderId> {
         this.paidAt = paidAt;
     }
 
-    private void setCancelledAt(OffsetDateTime cancelledAt) {
-        this.cancelledAt = cancelledAt;
+    private void setCanceledAt(OffsetDateTime canceledAt) {
+        this.canceledAt = canceledAt;
     }
 
     private void setReadyAt(OffsetDateTime readyAt) {

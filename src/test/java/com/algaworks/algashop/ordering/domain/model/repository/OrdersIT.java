@@ -4,6 +4,7 @@ import com.algaworks.algashop.ordering.domain.entity.CustomerTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.entity.OrderTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.entity.Order;
 import com.algaworks.algashop.ordering.domain.model.entity.OrderStatus;
+import com.algaworks.algashop.ordering.domain.model.valueobject.Money;
 import com.algaworks.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.algaworks.algashop.ordering.domain.model.valueobject.id.OrderId;
 import com.algaworks.algashop.ordering.infrastructure.persistence.assembler.CustomerPersistenceEntityAssembler;
@@ -66,7 +67,7 @@ class OrdersIT {
                     Assertions.assertThat(s.totalItems()).isEqualTo(order.totalItems());
                     Assertions.assertThat(s.placedAt()).isEqualTo(order.placedAt());
                     Assertions.assertThat(s.paidAt()).isEqualTo(order.paidAt());
-                    Assertions.assertThat(s.cancelledAt()).isEqualTo(order.cancelledAt());
+                    Assertions.assertThat(s.canceledAt()).isEqualTo(order.canceledAt());
                     Assertions.assertThat(s.readyAt()).isEqualTo(order.readyAt());
                     Assertions.assertThat(s.status()).isEqualTo(order.status());
                     Assertions.assertThat(s.paymentMethod()).isEqualTo(order.paymentMethod());
@@ -109,7 +110,7 @@ class OrdersIT {
 
         Order savedOrder = orders.ofId(order.id()).orElseThrow();
 
-        Assertions.assertThat(savedOrder.cancelledAt()).isNull();
+        Assertions.assertThat(savedOrder.canceledAt()).isNull();
         Assertions.assertThat(savedOrder.paidAt()).isNotNull();
     }
 
@@ -169,5 +170,65 @@ class OrdersIT {
 
         Assertions.assertThat(listedOrders).isEmpty();
 
+    }
+
+    @Test
+    public void shouldReturnTotalSoldByCustomer() {
+        Order order1 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PAID)
+                .build();
+
+        Order order2 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PAID)
+                .build();
+
+        Order order3 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.CANCELED)
+                .build();
+
+        Order order4 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PLACED)
+                .build();
+
+        orders.add(order1);
+        orders.add(order2);
+        orders.add(order3);
+        orders.add(order4);
+
+        CustomerId customerId = CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+
+        Money expectedTotalAmount = order1.totalAmount().add(order2.totalAmount());
+
+        Assertions.assertThat(orders.totalSoldForCustomer(customerId)).isEqualTo(expectedTotalAmount);
+        Assertions.assertThat(orders.totalSoldForCustomer(new CustomerId())).isEqualTo(Money.ZERO);
+    }
+
+    @Test
+    public void shouldReturnSalesQuantityByCustomer() {
+        Order order1 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PAID)
+                .build();
+
+        Order order2 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PAID)
+                .build();
+
+        Order order3 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.CANCELED)
+                .build();
+
+        Order order4 = OrderTestDataBuilder.anOrder()
+                .status(OrderStatus.PLACED)
+                .build();
+
+        orders.add(order1);
+        orders.add(order2);
+        orders.add(order3);
+        orders.add(order4);
+
+        CustomerId customerId = CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+
+        Assertions.assertThat(orders.salesQuantityByCustomerInYear(customerId, Year.now())).isEqualTo(2L);
+        Assertions.assertThat(orders.salesQuantityByCustomerInYear(new CustomerId(), Year.now())).isZero();
     }
 }

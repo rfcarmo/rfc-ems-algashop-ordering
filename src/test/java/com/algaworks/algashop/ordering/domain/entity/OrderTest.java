@@ -36,7 +36,7 @@ class OrderTest {
 
             Assertions.assertThat(o.placedAt()).isNull();
             Assertions.assertThat(o.paidAt()).isNull();
-            Assertions.assertThat(o.cancelledAt()).isNull();
+            Assertions.assertThat(o.canceledAt()).isNull();
             Assertions.assertThat(o.readyAt()).isNull();
             Assertions.assertThat(o.billing()).isNull();
             Assertions.assertThat(o.shipping()).isNull();
@@ -353,7 +353,7 @@ class OrderTest {
         order.cancel();
 
         Assertions.assertThat(order.isCanceled()).isTrue();
-        Assertions.assertThat(order.cancelledAt()).isNotNull();
+        Assertions.assertThat(order.canceledAt()).isNotNull();
     }
 
     @Test
@@ -363,7 +363,7 @@ class OrderTest {
         order.cancel();
 
         Assertions.assertThat(order.isCanceled()).isTrue();
-        Assertions.assertThat(order.cancelledAt()).isNotNull();
+        Assertions.assertThat(order.canceledAt()).isNotNull();
     }
 
     @Test
@@ -373,7 +373,7 @@ class OrderTest {
         order.cancel();
 
         Assertions.assertThat(order.isCanceled()).isTrue();
-        Assertions.assertThat(order.cancelledAt()).isNotNull();
+        Assertions.assertThat(order.canceledAt()).isNotNull();
     }
 
     @Test
@@ -383,20 +383,20 @@ class OrderTest {
         order.cancel();
 
         Assertions.assertThat(order.isCanceled()).isTrue();
-        Assertions.assertThat(order.cancelledAt()).isNotNull();
+        Assertions.assertThat(order.canceledAt()).isNotNull();
     }
 
     @Test
     public void givenCancelOrder_whenCancel_shouldNotAllow() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.CANCELED).build();
 
-        OffsetDateTime fixedCancelledAt = order.cancelledAt();
+        OffsetDateTime fixedCanceledAt = order.canceledAt();
 
         Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
                 .isThrownBy(() -> order.cancel());
 
         Assertions.assertThat(order.isCanceled()).isTrue();
-        Assertions.assertThat(order.cancelledAt()).isEqualTo(fixedCancelledAt);
+        Assertions.assertThat(order.canceledAt()).isEqualTo(fixedCanceledAt);
     }
 
 }
