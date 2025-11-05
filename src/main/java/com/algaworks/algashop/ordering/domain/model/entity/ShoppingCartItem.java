@@ -24,7 +24,7 @@ public class ShoppingCartItem {
 
     @Builder(builderClassName = "ExistingShoppingCartItem", builderMethodName = "existing")
     public ShoppingCartItem(ShoppingCartItemId id, ShoppingCartId shoppingCartId, ProductId productId, ProductName productName,
-                            Money price, Quantity quantity, Boolean available, Money totalAmount) {
+                               Money price, Quantity quantity, Boolean available, Money totalAmount) {
         this.setId(id);
         this.setShoppingCartId(shoppingCartId);
         this.setProductId(productId);
@@ -36,32 +36,31 @@ public class ShoppingCartItem {
     }
 
     @Builder(builderClassName = "BrandNewShoppingCartItem", builderMethodName = "brandNew")
-    public ShoppingCartItem(ShoppingCartId shoppingCartId, ProductId productId, ProductName productName, Money price,
-                            Quantity quantity, Boolean available) {
+    public ShoppingCartItem(ShoppingCartId shoppingCartId, ProductId productId, ProductName productName, Money price, Quantity quantity, Boolean available, Money totalAmount) {
         this(new ShoppingCartItemId(), shoppingCartId, productId, productName, price, quantity, available, Money.ZERO);
-        this.recalculateTotals();
+        recalculateTotalAmount();
     }
 
-    public void refresh(Product product) {
+    public void changeQuantity(Quantity quantity) {
+        this.setQuantity(quantity);
+        recalculateTotalAmount();
+    }
+
+    public void refreshProduct(Product product) {
         Objects.requireNonNull(product);
         Objects.requireNonNull(product.productId());
 
-        if (!product.productId().equals(this.productId())) {
-            throw new ShoppingCartItemIncompatibleProductException(this.id(), this.productId());
+        if (!this.productId.equals(product.productId())) {
+            throw new ShoppingCartItemIncompatibleProductException(this.id(), product.productId());
         }
 
         this.setPrice(product.price());
         this.setAvailable(product.inStock());
         this.setProductName(product.name());
-        recalculateTotals();
+        recalculateTotalAmount();
     }
 
-    public void changeQuantity(Quantity newQuantity) {
-        this.setQuantity(newQuantity);
-        recalculateTotals();
-    }
-
-    private void recalculateTotals() {
+    private void recalculateTotalAmount() {
         this.setTotalAmount(price.multiply(quantity));
     }
 
@@ -77,7 +76,7 @@ public class ShoppingCartItem {
         return productId;
     }
 
-    public ProductName name() {
+    public ProductName productName() {
         return productName;
     }
 
@@ -99,31 +98,26 @@ public class ShoppingCartItem {
 
     private void setId(ShoppingCartItemId id) {
         Objects.requireNonNull(id);
-
         this.id = id;
     }
 
     private void setShoppingCartId(ShoppingCartId shoppingCartId) {
         Objects.requireNonNull(shoppingCartId);
-
         this.shoppingCartId = shoppingCartId;
     }
 
     private void setProductId(ProductId productId) {
         Objects.requireNonNull(productId);
-
         this.productId = productId;
     }
 
     private void setProductName(ProductName productName) {
         Objects.requireNonNull(productName);
-
         this.productName = productName;
     }
 
     private void setPrice(Money price) {
         Objects.requireNonNull(price);
-
         this.price = price;
     }
 
@@ -139,13 +133,11 @@ public class ShoppingCartItem {
 
     private void setAvailable(Boolean available) {
         Objects.requireNonNull(available);
-
         this.available = available;
     }
 
     private void setTotalAmount(Money totalAmount) {
         Objects.requireNonNull(totalAmount);
-
         this.totalAmount = totalAmount;
     }
 
