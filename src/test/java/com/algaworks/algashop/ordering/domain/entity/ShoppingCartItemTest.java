@@ -22,15 +22,16 @@ class ShoppingCartItemTest {
                 .available(true)
                 .build();
 
-        Assertions.assertWith(item,
-                i -> Assertions.assertThat(i.id()).isNotNull(),
-                i -> Assertions.assertThat(i.shoppingCartId()).isNotNull(),
-                i -> Assertions.assertThat(i.productId()).isNotNull(),
-                i -> Assertions.assertThat(i.productName()).isEqualTo(new ProductName("Notebook")),
-                i -> Assertions.assertThat(i.price()).isEqualTo(new Money("2000")),
-                i -> Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(2)),
-                i -> Assertions.assertThat(i.isAvailable()).isTrue(),
-                i -> Assertions.assertThat(i.totalAmount()).isEqualTo(new Money("4000"))
+        Assertions.assertWith(item, i-> {
+                Assertions.assertThat(i.id()).isNotNull();
+                Assertions.assertThat(i.shoppingCartId()).isNotNull();
+                Assertions.assertThat(i.productId()).isNotNull();
+                Assertions.assertThat(i.productName()).isEqualTo(new ProductName("Notebook"));
+                Assertions.assertThat(i.price()).isEqualTo(new Money("2000"));
+                Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(2));
+                Assertions.assertThat(i.isAvailable()).isTrue();
+                Assertions.assertThat(i.totalAmount()).isEqualTo(new Money("4000"));
+            }
         );
     }
 
@@ -43,9 +44,10 @@ class ShoppingCartItemTest {
 
         item.changeQuantity(new Quantity(3));
 
-        Assertions.assertWith(item,
-                i -> Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(3)),
-                i -> Assertions.assertThat(i.totalAmount()).isEqualTo(new Money("3000"))
+        Assertions.assertWith(item, i -> {
+                Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(3));
+                Assertions.assertThat(i.totalAmount()).isEqualTo(new Money("3000"));
+            }
         );
     }
 
@@ -59,9 +61,10 @@ class ShoppingCartItemTest {
         Product product = ProductTestDataBuilder.aProduct().build();
         item.refreshProduct(product);
 
-        Assertions.assertWith(item,
-                i -> Assertions.assertThat(i.price()).isEqualTo(product.price()),
-                i -> Assertions.assertThat(i.totalAmount()).isEqualTo(product.price().multiply(new Quantity(2)))
+        Assertions.assertWith(item, i -> {
+                Assertions.assertThat(i.price()).isEqualTo(product.price());
+                Assertions.assertThat(i.totalAmount()).isEqualTo(product.price().multiply(new Quantity(2)));
+            }
         );
     }
 

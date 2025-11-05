@@ -22,13 +22,14 @@ class ShoppingCartTest {
 
         ShoppingCart cart = ShoppingCart.startShopping(customerId);
 
-        Assertions.assertWith(cart,
-                c -> Assertions.assertThat(c.id()).isNotNull(),
-                c -> Assertions.assertThat(c.customerId()).isEqualTo(customerId),
-                c -> Assertions.assertThat(c.totalAmount()).isEqualTo(Money.ZERO),
-                c -> Assertions.assertThat(c.totalItems()).isEqualTo(Quantity.ZERO),
-                c -> Assertions.assertThat(c.isEmpty()).isTrue(),
-                c -> Assertions.assertThat(c.items()).isEmpty()
+        Assertions.assertWith(cart, c -> {
+                Assertions.assertThat(c.id()).isNotNull();
+                Assertions.assertThat(c.customerId()).isEqualTo(customerId);
+                Assertions.assertThat(c.totalAmount()).isEqualTo(Money.ZERO);
+                Assertions.assertThat(c.totalItems()).isEqualTo(Quantity.ZERO);
+                Assertions.assertThat(c.isEmpty()).isTrue();
+                Assertions.assertThat(c.items()).isEmpty();
+            }
         );
     }
 
@@ -90,10 +91,11 @@ class ShoppingCartTest {
 
         cart.empty();
 
-        Assertions.assertWith(cart,
-                c -> Assertions.assertThat(c.isEmpty()).isTrue(),
-                c -> Assertions.assertThat(c.totalItems()).isEqualTo(Quantity.ZERO),
-                c -> Assertions.assertThat(c.totalAmount()).isEqualTo(Money.ZERO)
+        Assertions.assertWith(cart, c -> {
+                Assertions.assertThat(c.isEmpty()).isTrue();
+                Assertions.assertThat(c.totalItems()).isEqualTo(Quantity.ZERO);
+                Assertions.assertThat(c.totalAmount()).isEqualTo(Money.ZERO);
+            }
         );
     }
 
