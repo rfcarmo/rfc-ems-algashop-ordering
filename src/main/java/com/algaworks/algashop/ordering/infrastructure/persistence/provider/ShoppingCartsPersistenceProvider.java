@@ -48,7 +48,7 @@ public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
 
         persistenceRepository.findById(ShoppingCartId)
                 .ifPresentOrElse(
-                        (persistenceEntity) -> update(aggregateRoot, persistenceEntity),
+                        persistenceEntity -> update(aggregateRoot, persistenceEntity),
                         ()-> insert(aggregateRoot)
                 );
     }

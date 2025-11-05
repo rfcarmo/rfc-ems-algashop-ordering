@@ -73,7 +73,6 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
                 .price(product.price())
                 .quantity(quantity)
                 .available(product.inStock())
-                .totalAmount(product.price().multiply(quantity))
                 .build();
 
         this.items.add(shoppingCartItem);
@@ -91,13 +90,13 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
     }
 
     public void refreshItem(Product product) {
-        ShoppingCartItem item = findItem(product.productId());
+        ShoppingCartItem item = this.findItem(product.productId());
         item.refreshProduct(product);
         this.recalculateTotals();
     }
 
     public void changeItemQuantity(ShoppingCartItemId shoppingCartItemId, Quantity quantity) {
-        ShoppingCartItem item = findItem(shoppingCartItemId);
+        ShoppingCartItem item = this.findItem(shoppingCartItemId);
         item.changeQuantity(quantity);
         this.recalculateTotals();
     }
@@ -125,11 +124,11 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
     }
 
     public void recalculateTotals() {
-        BigDecimal totalValue = this.items.stream()
+        BigDecimal totalValue = items.stream()
                 .map(i -> i.totalAmount().value())
                 .reduce(BigDecimal.ZERO, (acum, val) -> acum.add(val));
 
-        Integer totalQuantity = this.items.stream()
+        Integer totalQuantity = items.stream()
                 .map(i -> i.quantity().value())
                 .reduce(0, (acum, val) -> Integer.sum(acum, val));
 
