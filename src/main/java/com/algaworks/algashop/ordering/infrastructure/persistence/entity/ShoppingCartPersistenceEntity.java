@@ -87,10 +87,13 @@ public class ShoppingCartPersistenceEntity {
         if (item == null) {
             return;
         }
+
         if (this.getItems() == null) {
             this.setItems(new HashSet<>());
         }
+
         item.setShoppingCart(this);
+
         this.items.add(item);
     }
 
@@ -98,6 +101,7 @@ public class ShoppingCartPersistenceEntity {
         if (customer == null) {
             return null;
         }
+
         return customer.getId();
     }
 
@@ -108,6 +112,7 @@ public class ShoppingCartPersistenceEntity {
         }
 
         updatedItems.forEach(i -> i.setShoppingCart(this));
+
         this.setItems(updatedItems);
     }
 }

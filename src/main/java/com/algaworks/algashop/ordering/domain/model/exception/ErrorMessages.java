@@ -37,4 +37,6 @@ public class ErrorMessages {
     public static final String ERROR_SHOPPING_CART_ITEM_INCOMPATIBLE_PRODUCT = "Shopping cart item with ID %s is incompatible with product ID %s";
 
     public static final String ERROR_SHOPPING_CART_DOES_NOT_CONTAIN_PRODUCT = "Shopping cart with ID %s does not contain product ID %s";
+
+    public static final String ERROR_SHOPPING_CART_CANNOT_PROCEED_TO_CHECKOUT = "Shopping cart with ID %s cannot proceed to checkout due to: %s";
 }

@@ -130,7 +130,7 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
 
         Integer totalQuantity = items.stream()
                 .map(i -> i.quantity().value())
-                .reduce(0, (acum, val) -> Integer.sum(acum, val));
+                .reduce(0, (v1, v2) -> Integer.sum(v1, v2));
 
         this.setTotalAmount(new Money(totalValue));
         this.setTotalItems(new Quantity(totalQuantity));
