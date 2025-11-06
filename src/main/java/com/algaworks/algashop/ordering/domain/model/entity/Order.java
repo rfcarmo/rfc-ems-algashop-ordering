@@ -1,6 +1,7 @@
 package com.algaworks.algashop.ordering.domain.model.entity;
 
 import com.algaworks.algashop.ordering.domain.model.exception.*;
+import com.algaworks.algashop.ordering.domain.model.validator.FieldValidations;
 import com.algaworks.algashop.ordering.domain.model.valueobject.*;
 import com.algaworks.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.algaworks.algashop.ordering.domain.model.valueobject.id.OrderId;
@@ -98,7 +99,7 @@ public class Order implements AggregateRoot<OrderId> {
 
     public void addItem(Product product, Quantity quantity) {
         Objects.requireNonNull(product);
-        Objects.requireNonNull(quantity);
+        FieldValidations.requiresValidQuantity(quantity.value());
 
         verifyIfChangeable();
 

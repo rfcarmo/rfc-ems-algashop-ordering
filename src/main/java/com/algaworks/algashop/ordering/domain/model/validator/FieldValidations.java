@@ -36,4 +36,12 @@ public class FieldValidations {
             throw new IllegalArgumentException(errorMessage);
         }
     }
+
+    public static void requiresValidQuantity(int quantity) {
+        Objects.requireNonNull(quantity);
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException();
+        }
+    }
 }
