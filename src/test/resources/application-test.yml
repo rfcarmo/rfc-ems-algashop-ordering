@@ -20,6 +20,6 @@ spring:
 algashop:
   integrations:
     shipping:
-      provider: 'RAPIDEX'
+      provider: 'FAKE'
     rapidex-api:
       url: 'http://localhost:8780'
