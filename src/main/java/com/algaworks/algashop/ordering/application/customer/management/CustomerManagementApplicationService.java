@@ -33,7 +33,7 @@ public class CustomerManagementApplicationService {
                 new Email(customerInput.getEmail()),
                 new Phone(customerInput.getPhone()),
                 new Document(customerInput.getDocument()),
-                customerInput.isPromotionNotificationsAllowed(),
+                customerInput.getPromotionalNotificationsAllowed(),
                 Address.builder()
                         .street(addressData.getStreet())
                         .complement(addressData.getComplement())
@@ -59,6 +59,37 @@ public class CustomerManagementApplicationService {
                 .orElseThrow(() -> new CustomerNotFoundException());
 
         return mapper.convert(customer, CustomerOutput.class);
+    }
+
+    @Transactional
+    public void update(UUID customerId, CustomerUpdateInput input) {
+        Objects.requireNonNull(customerId);
+        Objects.requireNonNull(input);
+
+        Customer customer = customers.ofId(new CustomerId(customerId)).orElseThrow(() -> new CustomerNotFoundException());
+
+        customer.changeName(new FullName(input.getFirstName(), input.getLastName()));
+        customer.changePhone(new Phone(input.getPhone()));
+
+        if (Boolean.TRUE.equals(input.getPromotionalNotificationsAllowed())) {
+            customer.enablePromotionNotifications();
+        } else {
+            customer.disablePromotionNotifications();
+        }
+
+        AddressData addressData = input.getAddress();
+
+        customer.changeAddress(Address.builder()
+                .street(addressData.getStreet())
+                .complement(addressData.getComplement())
+                .neighborhood(addressData.getNeighborhood())
+                .number(addressData.getNumber())
+                .city(addressData.getCity())
+                .state(addressData.getState())
+                .zipCode(new ZipCode(addressData.getZipCode()))
+                .build());
+
+        customers.add(customer);
     }
 
 }

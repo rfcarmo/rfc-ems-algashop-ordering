@@ -6,20 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerInput {
+public class CustomerUpdateInput {
 
     private String firstName;
     private String lastName;
-    private String email;
     private String phone;
-    private String document;
-    private LocalDate birthDate;
     private Boolean promotionalNotificationsAllowed;
     private AddressData address;
 
